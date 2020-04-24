@@ -1,0 +1,151 @@
+<html>
+
+<head>
+	<title>Lotto</title>
+</head>
+<style type="text/css">
+	#lotto>p>span {
+		display: inline-block;
+		background: url(http://cc.zumst.com/static/lotto/images/bg_lotto.gif) no-repeat;
+		width: 34px;
+		height: 34px;
+		line-height: 34px;
+		font-family: tahoma;
+		font-weight: bold;
+		letter-spacing: -1px;
+		font-size: 15px;
+		color: #fff;
+		text-align: center;
+	}
+
+	#lotto>p>span:nth-of-type(1) {
+		background-position: 0 0
+	}
+
+	#lotto>p>span:nth-of-type(2) {
+		background-position: 0 -34px
+	}
+
+	#lotto>p>span:nth-of-type(3) {
+		background-position: 0 -68px
+	}
+
+	#lotto>p>span:nth-of-type(4) {
+		background-position: 0 -102px
+	}
+
+	#lotto>p>span:nth-of-type(5) {
+		background-position: 0 -136px
+	}
+
+	/*
+	#lotto>p>span:last-of-type:before {
+		content: '+'
+	}
+
+	#lotto>p>span:last-of-type {
+		color: black;
+		background: none;
+		background-color: pink;
+		margin: 0 5px
+	}
+	*/
+
+	h1 {
+		float: left;
+	}
+
+	#refresh {
+		margin: 28px 0 0 12px;
+		padding: 6px;
+	}
+
+	#lotto {
+		clear: both;
+	}
+</style>
+<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	var selectResult = [];
+	var playYn = 'N';
+	
+	// 랜덤 배열
+	function selectRandomList() {
+		var lottoNumberList = Array(45);
+		var fillLottoNumberList = lottoNumberList.fill();
+
+		fillLottoNumberList.map(function(element, index) {
+			return fillLottoNumberList[index] = index + 1;
+		});
+		
+		while (lottoNumberList.length > 0) {
+			// 랜덤 처리한 숫자 중 한개 선택
+			var choiceNumber = lottoNumberList.splice(Math.floor(Math.random() * lottoNumberList.length), 1)[0];
+			selectResult.push(choiceNumber);
+		}
+	}
+	
+	//selectRandomList();
+	
+	// 예상 당첨번호 추출(6개))
+	function playLotto() {
+		//console.log(selectResult);
+		
+		var bonusNumber = selectResult[selectResult.length - 1];
+		var selectNumberList = selectResult.splice(0, 6);
+		
+		// 번호 재배열
+		selectNumberList.sort(function(p, c) {
+			return p - c;
+		});
+		
+		console.log(selectNumberList.sort(function(p,c) { return p - c }), bonusNumber);
+		
+		var selectIdx = 0;
+		var p = document.createElement('p');
+		var renderInterval = setInterval(function() {
+			if (selectIdx < selectNumberList.length) {
+				var span = document.createElement('span');
+				$(span).text(selectNumberList[selectIdx]);
+				$(p).append(span);
+				selectIdx++;
+			} else {
+				clearInterval(renderInterval);
+			}
+		}, 200);
+		$('#lotto').append(p);
+	}
+	
+	//playLotto();
+	
+	function letsPlay() {
+		var playLottoInterval = null;
+		var maxPlayCount = 5;
+		var playCount = 1;
+
+		$('#refresh').hide();
+		$('#lotto').html('<div id="loading_div"><img src="https://i.gifer.com/4V0b.gif" /></div>');
+		
+		playLottoInterval = setInterval(function() {
+			$(loading_div).hide();
+			if (playCount <= maxPlayCount) {
+				selectRandomList();
+				playLotto();
+				playCount++;
+			} else {
+				$('#refresh').show();
+				clearInterval(playLottoInterval);
+			}
+		}, 1800);
+	}
+</script>
+
+<body onload="letsPlay()">
+	<h1>로또당첨번호 예측!</h1>
+	<button id="refresh" onclick="letsPlay()" style="display:none;">다시뽑기</button>
+	<div id="lotto">
+
+	</div>
+</body>
+
+</html>
