@@ -8,35 +8,170 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Scrolling Nav - Start Bootstrap Template</title>
+  <title>Lotto Doit!</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="css/scrolling-nav.css" rel="stylesheet">
+	<style type="text/css">
+	#lotto>p>span {
+		display: inline-block;
+		background: url(http://cc.zumst.com/static/lotto/images/bg_lotto.gif) no-repeat;
+		width: 34px;
+		height: 34px;
+		line-height: 34px;
+		font-family: tahoma;
+		font-weight: bold;
+		letter-spacing: -1px;
+		font-size: 15px;
+		color: #fff;
+		text-align: center;
+	}
+
+	#lotto>p>span:nth-of-type(1) {
+		background-position: 0 0
+	}
+
+	#lotto>p>span:nth-of-type(2) {
+		background-position: 0 -34px
+	}
+
+	#lotto>p>span:nth-of-type(3) {
+		background-position: 0 -68px
+	}
+
+	#lotto>p>span:nth-of-type(4) {
+		background-position: 0 -102px
+	}
+
+	#lotto>p>span:nth-of-type(5) {
+		background-position: 0 -136px
+	}
+
+	/*
+	#lotto>p>span:last-of-type:before {
+		content: '+'
+	}
+
+	#lotto>p>span:last-of-type {
+		color: black;
+		background: none;
+		background-color: pink;
+		margin: 0 5px
+	}
+	*/
+
+	h1 {
+		float: left;
+	}
+
+	#refresh {
+		margin: 28px 0 0 12px;
+		padding: 6px;
+	}
+
+	#lotto {
+		clear: both;
+	}
+</style>
+	<script type="text/javascript">
+	var selectResult = [];
+	var playYn = 'N';
+	
+	// 랜덤 배열
+	function selectRandomList() {
+		var lottoNumberList = Array(45);
+		var fillLottoNumberList = lottoNumberList.fill();
+
+		fillLottoNumberList.map(function(element, index) {
+			return fillLottoNumberList[index] = index + 1;
+		});
+		
+		while (lottoNumberList.length > 0) {
+			// 랜덤 처리한 숫자 중 한개 선택
+			var choiceNumber = lottoNumberList.splice(Math.floor(Math.random() * lottoNumberList.length), 1)[0];
+			selectResult.push(choiceNumber);
+		}
+	}
+	
+	//selectRandomList();
+	
+	// 예상 당첨번호 추출(6개))
+	function playLotto() {
+		//console.log(selectResult);
+		
+		var bonusNumber = selectResult[selectResult.length - 1];
+		var selectNumberList = selectResult.splice(0, 6);
+		
+		// 번호 재배열
+		selectNumberList.sort(function(p, c) {
+			return p - c;
+		});
+		
+		console.log(selectNumberList.sort(function(p,c) { return p - c }), bonusNumber);
+		
+		var selectIdx = 0;
+		var p = document.createElement('p');
+		var renderInterval = setInterval(function() {
+			if (selectIdx < selectNumberList.length) {
+				var span = document.createElement('span');
+				$(span).text(selectNumberList[selectIdx]);
+				$(p).append(span);
+				selectIdx++;
+			} else {
+				clearInterval(renderInterval);
+			}
+		}, 200);
+		$('#lotto').append(p);
+	}
+	
+	//playLotto();
+	
+	function letsPlay() {
+		var playLottoInterval = null;
+		var maxPlayCount = 5;
+		var playCount = 1;
+
+		$('#refresh').hide();
+		$('#lotto').html('<div id="loading_div"><img src="https://i.gifer.com/4V0b.gif" /></div>');
+		
+		playLottoInterval = setInterval(function() {
+			$(loading_div).hide();
+			if (playCount <= maxPlayCount) {
+				selectRandomList();
+				playLotto();
+				playCount++;
+			} else {
+				$('#refresh').show();
+				clearInterval(playLottoInterval);
+			}
+		}, 1800);
+	}
+</script>
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="letsPlay()">
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a>
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Lotto Doit</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            <a class="nav-link js-scroll-trigger" href="#about">당첨번호</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#services">Services</a>
+            <a class="nav-link js-scroll-trigger" href="#services">나의로또</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            <a class="nav-link js-scroll-trigger" href="#contact">행운번호</a>
           </li>
         </ul>
       </div>
@@ -45,8 +180,8 @@
 
   <header class="bg-primary text-white">
     <div class="container text-center">
-      <h1>Welcome to Scrolling Nav</h1>
-      <p class="lead">A landing page template freshly redesigned for Bootstrap 4</p>
+      <h1>Lotto Doit 에 방문해 주셔서 감사합니다</h1>
+      <p class="lead">여러분의 행운을 빌어드릴게요~</p>
     </div>
   </header>
 
@@ -82,8 +217,11 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mx-auto">
-          <h2>Contact us</h2>
-          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et repudiandae ipsa exercitationem, in, quo totam.</p>
+          <h2>이번주 당첨 예상번호는?</h2>
+          <p class="lead">
+			  <button id="refresh" onclick="letsPlay()" style="display:none;">다시뽑기</button>
+			  <div id="lotto"></div>
+		  </p>
         </div>
       </div>
     </div>
