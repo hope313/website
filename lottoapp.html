@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lotto App</title>
+	<style>
+		* { font-family: 'Nanum Gothic', sans-serif; }
+		.header > h1 { font-family: 'Fascinate', cursive; }
+		li { list-style: none; }
+	</style>
+	<style>
+		.container { width: 900px; margin: 0 auto; }		
+		.content { overflow: hidden; }		
+		
+		ul { overflow: hidden; }
+		li { float: left; padding: 0 20px; }
+		
+		.header { height: 100px; position: relative; }
+		.header h1 { position: absolute; left: 10px; top: 0px; }
+		.navigation { position: absolute; left: 0; bottom: 0; height: 40px; width: 100% }
+		
+		.container div {
+			box-sizing: border-box;
+			border: 1px solid black;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<h1>Header</h1>
+			<div class="navigation">
+				<ul>
+					<li>menu1</li>
+					<li>menu2</li>
+					<li>menu3</li>
+					<li>menu4</li>
+				</ul>
+			</div>			
+		</div>
+		<div class="content">
+			<div class="article">article</div>
+		</div>
+		<div class="footer">Footer</div>
+	</div>
+</body>
+</html>
